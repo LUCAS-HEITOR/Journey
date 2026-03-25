@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frog Store - Fishing Equipment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2E7D32;
+            --secondary-color: #1B5E20;
+            --accent-color: #FFB74D;
+            --light-bg: #F1F8E9;
+            --text-dark: #1D1D1D;
+            --text-light: #666;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--text-dark);
+            background-color: #fff;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: var(--box-shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo::before {
+            content: "🐸";
+            font-size: 32px;
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            transition: opacity 0.3s;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            font-size: 20px;
+            transition: transform 0.3s;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-color);
+            color: var(--secondary-color);
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+            color: white;
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            margin-bottom: 30px;
+            opacity: 0.95;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--accent-color);
+            color: var(--secondary-color);
+            text-decoration: none;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .btn:hover {
+            background-color: #FFC966;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 183, 77, 0.4);
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Section */
+        .section {
+            padding: 60px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 50px;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 20px;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+
+        /* Products Grid */
+        .products {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--box-shadow);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--light-bg), #E8F5E9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 64px;
+        }
+
+        .product-info {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: var(--primary-color);
+        }
+
+        .product-description {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .product-price {
+            font-size: 24px;
+            font-weight: bold;
+            color: var(--secondary-color);
+            margin-bottom: 15px;
+        }
+
+        .product-price .old-price {
+            font-size: 16px;
+            text-decoration: line-through;
+            color: #999;
+            margin-right: 10px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: var(--secondary-color);
+        }
+
+        /* Categories */
+        .categories {
+            background: var(--light-bg);
+            padding: 60px 0;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .category-card {
+            background: white;
+            padding: 30px;
+            border-radius: var(--border-radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .category-card:hover {
+            transform: scale(1.05);
+            box-shadow: var(--box-shadow);
+        }
+
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .category-name {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        /* Features */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 60px 0;
+        }
+
+        .feature {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .feature h3 {
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .feature p {
+            color: var(--text-light);
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background: var(--primary-color);
+            color: white;
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 20px auto;
+            gap: 10px;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: var(--border-radius);
+            font-size: 14px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            color: white;
+            padding: 40px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .footer-section h3 {
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 20px;
+            color: #aaa;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav {
+                gap: 15px;
+                font-size: 14px;
+            }
+
+            .hero h1 {
+                font-size: 32px;
+            }
+
+            .section-title {
+                font-size: 28px;
+            }
+
+            .products {
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 20px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .header-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            nav {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .hero {
+                padding: 40px 20px;
+            }
+
+            .hero h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-container">
+            <div class="logo">Frog Store</div>
+            <nav>
+                <a href="#inicio">Home</a>
+                <a href="#produtos">Products</a>
+                <a href="#categorias">Categories</a>
+                <a href="#contato">Contact</a>
+            </nav>
+            <div class="cart-icon">
+                🛒
+                <span class="cart-count">3</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="inicio">
+        <h1>Welcome to Frog Store 🐸</h1>
+        <p>The Best Fishing Equipment on the Market</p>
+        <button class="btn">Explore Products</button>
+    </section>
+
+    <!-- Features -->
+    <div class="container">
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🚚</div>
+                <h3>Fast Delivery</h3>
+                <p>Receive your orders in up to 3 business days</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">💰</div>
+                <h3>Competitive Prices</h3>
+                <p>Best prices guaranteed on the market</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🛡️</div>
+                <h3>100% Guarantee</h3>
+                <p>Quality guaranteed on all products</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <section class="categories" id="categorias">
+        <div class="container">
+            <h2 class="section-title">Main Categories</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <div class="category-icon">🎣</div>
+                    <div class="category-name">Rods and Reels</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🪝</div>
+                    <div class="category-name">Hooks and Baits</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">🎯</div>
+                    <div class="category-name">Lines and Leaders</div>
+                </div>
+                <div class="category-card">
+                    <div class="category-icon">👝</div>
+                    <div class="category-name">Backpacks and Bags</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="section" id="produtos">
+        <div class="container">
+            <h2 class="section-title">Featured Products</h2>
+            <div class="products">
+                <div class="product-card">
+                    <div class="product-image">🎣</div>
+                    <div class="product-info">
+                        <div class="product-name">Premium Fishing Rod</div>
+                        <div class="product-description">High-quality telescopic rod, ideal for rivers and ponds</div>
+                        <div class="product-price"><span class="old-price">$350.00</span> $249.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">🪝</div>
+                    <div class="product-info">
+                        <div class="product-name">Premium Hooks Kit</div>
+                        <div class="product-description">50 hooks in different sizes with storage case</div>
+                        <div class="product-price"><span class="old-price">$120.00</span> $79.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">🪡</div>
+                    <div class="product-info">
+                        <div class="product-name">Nylon Fishing Line</div>
+                        <div class="product-description">Resistant line 500m long, supports up to 20kg</div>
+                        <div class="product-price">$45.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">🎯</div>
+                    <div class="product-info">
+                        <div class="product-name">Magnetic Hook Finder</div>
+                        <div class="product-description">Magnetic locator for lost hooks and baits</div>
+                        <div class="product-price"><span class="old-price">$85.00</span> $59.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">🪣</div>
+                    <div class="product-info">
+                        <div class="product-name">Collapsible Bucket</div>
+                        <div class="product-description">Durable 25L bucket, perfect for storing fish</div>
+                        <div class="product-price">$89.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">👝</div>
+                    <div class="product-info">
+                        <div class="product-name">Waterproof Backpack</div>
+                        <div class="product-description">40L waterproof backpack with multiple compartments</div>
+                        <div class="product-price"><span class="old-price">$280.00</span> $189.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">🔦</div>
+                    <div class="product-info">
+                        <div class="product-name">Rechargeable LED Flashlight</div>
+                        <div class="product-description">5000 lumens LED with USB rechargeable battery</div>
+                        <div class="product-price">$129.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="product-image">⌚</div>
+                    <div class="product-info">
+                        <div class="product-name">Digital Barometer Watch</div>
+                        <div class="product-description">Monitors atmospheric pressure for better fishing</div>
+                        <div class="product-price"><span class="old-price">$200.00</span> $149.90</div>
+                        <button class="add-to-cart">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <h2>Stay Updated with Our News</h2>
+        <p>Get exclusive offers and fishing tips delivered to your email</p>
+        <form class="newsletter-form">
+            <input type="email" placeholder="Enter your email" required>
+            <button class="btn">Subscribe</button>
+        </form>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contato">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Us</h3>
+                <p>Frog Store is your online shop specialized in quality fishing equipment. Since 2020, serving fishermen throughout the United States.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Products</a></li>
+                    <li><a href="#">Fishing Tips</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li>📧 contact@frogstore.com</li>
+                    <li>📱 +1 (555) 123-4567</li>
+                    <li>📍 New York - NY</li>
+                    <li>🕐 Mon-Fri 09h-18h</li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Social Media</h3>
+                <ul>
+                    <li><a href="#">🔵 Facebook</a></li>
+                    <li><a href="#">📷 Instagram</a></li>
+                    <li><a href="#">🐦 Twitter</a></li>
+                    <li><a href="#">▶️ YouTube</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Frog Store. All rights reserved. 🐸</p>
+        </div>
+    </footer>
+</body>
+</html>

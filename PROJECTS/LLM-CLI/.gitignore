@@ -1,0 +1,16 @@
+# Ignorar ambiente virtual
+.venv/
+venv/
+
+# Ignorar arquivos de chaves e configs sensíveis
+*.json
+!exemplo.json  # Se quiser manter um exemplo de estrutura
+
+# Ignorar arquivos do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Ignorar arquivos temporários do VSCode
+.vscode/
